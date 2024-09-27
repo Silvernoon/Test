@@ -25,9 +25,63 @@ nums2.length == n
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 
-int main();
+double findMedianSortedArrays(int *nums1, int nums1Size, int *nums2, int nums2Size);
 
-double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size) {
-    
+int main()
+{
+    int a[2] = {1, 3};
+    int b[2] = {2};
+    printf("%f", findMedianSortedArrays(a, 2, b, 1));
+}
+
+double findMedianSortedArrays(int *nums1, int nums1Size, int *nums2, int nums2Size)
+{
+    int sumSize = nums1Size + nums2Size;
+    int *sum = (int *)malloc(sizeof(int) * sumSize);
+
+    // i为数组1下标， j为数组2下标，k为总数组下标
+    int i = 0, j = 0, k = 0;
+    while (k < sumSize)
+    {
+        switch ((i < nums1Size) + (j < nums2Size) * 2)
+        {
+        case 1:
+            goto C;
+        case 2:
+            goto B;
+        case 3:
+            goto A;
+        default:
+            break;
+        }
+
+        if (0)
+        {
+        A:
+            if (nums1[i] <= nums2[j])
+            {
+            C:
+                sum[k] = nums1[i];
+                i++;
+            }
+            else
+            {
+            B:
+                sum[k] = nums2[j];
+                j++;
+            }
+        }
+
+        k++;
+    }
+
+    double ret;
+    if (sumSize % 2) // 奇数
+        ret = (double)sum[(sumSize + 1) / 2 - 1];
+    else // 偶数
+        ret = (double)(sum[sumSize / 2 - 1] + sum[sumSize / 2]) / 2;
+    free(sum);
+    return ret;
 }
